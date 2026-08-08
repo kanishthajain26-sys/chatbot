@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Chatbot</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+    
+        <aside class="sidebar">
+
+            <div class="logo">
+                🤖 AI Chat
+            </div>
+
+            <button id="newChatBtn">
+                + New Chat
+            </button>
+
+            <div class="recent-title">
+                Recent Chats
+            </div>
+
+            <div id="recentChats" class="recent-chats">
+            </div>
+
+        </aside>
+
+
+        
+        <main class="main-chat">
+
+    
+            <header class="chat-header">
+
+                <h1>🤖 AI Assistant</h1>
+
+                <button id="clearBtn">
+                    Clear
+                </button>
+
+            </header>
+
+
+    
+            <div id="chatBox" class="chat-box">
+
+                <div class="welcome">
+
+                    <div class="robot">
+                        🤖
+                    </div>
+
+                    <h2>
+                        How can I help you?
+                    </h2>
+
+                    <p>
+                        Ask me anything and I'll try my best to help you.
+                    </p>
+
+                </div>
+
+            </div>
+
+        
+            <div class="input-area">
+
+                <input
+                    type="text"
+                    id="userInput"
+                    placeholder="Ask anything..."
+                    autocomplete="off"
+                >
+
+                <button id="sendBtn">
+                    Send
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
