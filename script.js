@@ -415,11 +415,8 @@ async function sendMessage() {
 
 
        
-        const answer =
-            data
-                .candidates?.[0]
-                ?.content?.parts?.[0]
-                ?.text;
+        const answer = data.answer;
+           
 
 
         if (!answer) {
