@@ -1,8 +1,4 @@
 
-
-
-
-
 const userInput =
     document.getElementById("userInput");
 
@@ -22,19 +18,13 @@ const recentChats =
     document.getElementById("recentChats");
 
 
-
 const API_URL = "/api/chat";
-
-
-
-
 
 
 let chats =
     JSON.parse(localStorage.getItem("chats")) || [];
 
 let currentChatId = null;
-
 
 
 function saveChats() {
@@ -47,8 +37,6 @@ function saveChats() {
 }
 
 
-
-
 function getCurrentChat() {
 
     return chats.find(
@@ -56,7 +44,6 @@ function getCurrentChat() {
     );
 
 }
-
 
 
 function createNewChat() {
@@ -96,14 +83,20 @@ function renderRecentChats() {
             document.createElement("button");
 
 
-        button.className = "recent-chat";
+        button.className =
+            "recent-chat";
 
-        button.textContent = chat.title;
+        button.textContent =
+            chat.title;
 
 
-        if (chat.id === currentChatId) {
+        if (
+            chat.id === currentChatId
+        ) {
 
-            button.classList.add("active");
+            button.classList.add(
+                "active"
+            );
 
         }
 
@@ -112,7 +105,8 @@ function renderRecentChats() {
             "click",
             () => {
 
-                currentChatId = chat.id;
+                currentChatId =
+                    chat.id;
 
                 renderRecentChats();
 
@@ -122,17 +116,19 @@ function renderRecentChats() {
         );
 
 
-        recentChats.appendChild(button);
+        recentChats.appendChild(
+            button
+        );
 
     });
 
 }
 
 
-
 function renderCurrentChat() {
 
-    const chat = getCurrentChat();
+    const chat =
+        getCurrentChat();
 
 
     chatBox.innerHTML = "";
@@ -150,22 +146,29 @@ function renderCurrentChat() {
     }
 
 
-    chat.messages.forEach(message => {
+    chat.messages.forEach(
+        message => {
 
-        if (message.role === "user") {
+            if (
+                message.role === "user"
+            ) {
 
-            showUserMessage(message.content);
+                showUserMessage(
+                    message.content
+                );
 
-        } else {
+            } else {
 
-            showBotMessage(message.content);
+                showBotMessage(
+                    message.content
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
-
 
 
 function showWelcome() {
@@ -194,20 +197,20 @@ function showWelcome() {
 }
 
 
-
-
 function showUserMessage(message) {
 
     const div =
         document.createElement("div");
 
-    div.className = "user-message";
+    div.className =
+        "user-message";
 
 
     const p =
         document.createElement("p");
 
-    p.textContent = "👤 " + message;
+    p.textContent =
+        "👤 " + message;
 
 
     div.appendChild(p);
@@ -219,28 +222,30 @@ function showUserMessage(message) {
 }
 
 
-
-
 function showBotMessage(message) {
 
     const div =
         document.createElement("div");
 
-    div.className = "bot-message";
+    div.className =
+        "bot-message";
 
 
     const p =
         document.createElement("p");
 
-    p.textContent = "🤖 " + message;
+    p.textContent =
+        "🤖 " + message;
 
 
     const copyBtn =
         document.createElement("button");
 
-    copyBtn.className = "copy-btn";
+    copyBtn.className =
+        "copy-btn";
 
-    copyBtn.textContent = "Copy";
+    copyBtn.textContent =
+        "Copy";
 
 
     div.appendChild(p);
@@ -254,27 +259,19 @@ function showBotMessage(message) {
 }
 
 
-
 async function sendMessage() {
 
-    // User ne input mein kya likha
     const message =
         userInput.value.trim();
 
 
-
     if (!message) {
-
         return;
-
     }
 
 
-    
     if (!currentChatId) {
-
         createNewChat();
-
     }
 
 
@@ -282,19 +279,17 @@ async function sendMessage() {
         getCurrentChat();
 
 
-    
     const welcome =
-        chatBox.querySelector(".welcome");
+        chatBox.querySelector(
+            ".welcome"
+        );
 
 
     if (welcome) {
-
         welcome.remove();
-
     }
 
 
-  
     showUserMessage(message);
 
 
@@ -307,12 +302,16 @@ async function sendMessage() {
     });
 
 
-  
-    if (chat.title === "New Chat") {
+    if (
+        chat.title === "New Chat"
+    ) {
 
         chat.title =
             message.length > 30
-                ? message.substring(0, 30) + "..."
+                ? message.substring(
+                    0,
+                    30
+                ) + "..."
                 : message;
 
     }
@@ -323,30 +322,29 @@ async function sendMessage() {
     renderRecentChats();
 
 
-    // Input empty karo
     userInput.value = "";
 
-
-    
 
     const loading =
         document.createElement("div");
 
-    loading.className = "bot-message";
+    loading.className =
+        "bot-message";
 
-    loading.id = "loading";
+    loading.id =
+        "loading";
 
     loading.innerHTML =
         "<p>🤖 Thinking...</p>";
 
-    chatBox.appendChild(loading);
+    chatBox.appendChild(
+        loading
+    );
 
     scrollToBottom();
 
 
     try {
-
-    
 
         const response =
             await fetch(
@@ -356,67 +354,37 @@ async function sendMessage() {
                     method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
-                    body:
-                        JSON.stringify({
-
-                            contents: [
-
-                                {
-
-                                    parts: [
-
-                                        {
-
-                                            text:
-                                                "Answer in simple language. "+
-                                                "Keep the answer short and beginner friendly. " +
-                                                "Do not give advanced details unless asked. " +
-                                                "User question: " +
-                                                 message
-
-                                        }
-
-                                    ]
-
-                                }
-
-                            ]
-
-                        })
+                    body: JSON.stringify({
+                        message: message
+                    })
 
                 }
             );
 
 
-       
         const data =
             await response.json();
 
 
-    
         if (!response.ok) {
 
             throw new Error(
-                data.error?.message ||
+                data.error ||
                 "API request failed"
             );
 
         }
 
 
-     
         loading.remove();
 
 
-       
-        const answer = data.answer;
-           
+        const answer =
+            data.answer;
 
 
         if (!answer) {
@@ -428,11 +396,11 @@ async function sendMessage() {
         }
 
 
-      
-        showBotMessage(answer);
+        showBotMessage(
+            answer
+        );
 
 
-       
         chat.messages.push({
 
             role: "bot",
@@ -442,7 +410,6 @@ async function sendMessage() {
         });
 
 
-      
         saveChats();
 
 
@@ -456,18 +423,18 @@ async function sendMessage() {
         );
 
 
-        console.error(error);
+        console.error(
+            "Chat Error:",
+            error
+        );
 
     }
 
 }
 
 
-
-
 function clearCurrentChat() {
 
-    // Current chat ka index find karo
     const index =
         chats.findIndex(
             chat =>
@@ -475,21 +442,18 @@ function clearCurrentChat() {
         );
 
 
-  
     if (index === -1) {
-
         return;
-
     }
 
 
+    chats.splice(
+        index,
+        1
+    );
 
-    chats.splice(index, 1);
 
-
- 
     saveChats();
-
 
 
     if (chats.length === 0) {
@@ -505,7 +469,6 @@ function clearCurrentChat() {
     }
 
 
-
     currentChatId =
         chats[0].id;
 
@@ -515,8 +478,6 @@ function clearCurrentChat() {
     renderCurrentChat();
 
 }
-
-
 
 
 chatBox.addEventListener(
@@ -536,9 +497,11 @@ chatBox.addEventListener(
 
 
             const message =
-                paragraph
-                    .textContent
-                    .replace("🤖 ", "");
+                paragraph.textContent
+                    .replace(
+                        "🤖 ",
+                        ""
+                    );
 
 
             await navigator.clipboard
@@ -549,12 +512,15 @@ chatBox.addEventListener(
                 "Copied!";
 
 
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                event.target.textContent =
-                    "Copy";
+                    event.target.textContent =
+                        "Copy";
 
-            }, 1500);
+                },
+                1500
+            );
 
         }
 
@@ -566,7 +532,9 @@ userInput.addEventListener(
     "keydown",
     event => {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             sendMessage();
 
@@ -574,7 +542,6 @@ userInput.addEventListener(
 
     }
 );
-
 
 
 sendBtn.addEventListener(
@@ -595,14 +562,12 @@ clearBtn.addEventListener(
 );
 
 
-
 function scrollToBottom() {
 
     chatBox.scrollTop =
         chatBox.scrollHeight;
 
 }
-
 
 
 function startApp() {
@@ -613,7 +578,6 @@ function startApp() {
 
     } else {
 
-       
         currentChatId =
             chats[0].id;
 

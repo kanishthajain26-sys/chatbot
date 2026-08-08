@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+
     if (req.method !== "POST") {
         return res.status(405).json({
             error: "Method not allowed"
@@ -6,9 +7,10 @@ export default async function handler(req, res) {
     }
 
     try {
+
         const { message } = req.body || {};
 
-        if (!message) {
+        if (!message || typeof message !== "string") {
             return res.status(400).json({
                 error: "Message is missing"
             });
@@ -52,10 +54,16 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Gemini API Error:", data);
+
+            console.error(
+                "Gemini API Error:",
+                data
+            );
 
             return res.status(response.status).json({
-                error: data.error?.message || "Gemini API request failed"
+                error:
+                    data.error?.message ||
+                    "Gemini API request failed"
             });
         }
 
@@ -73,10 +81,16 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error("Server Error:", error);
+
+        console.error(
+            "Server Error:",
+            error
+        );
 
         return res.status(500).json({
-            error: error.message || "Something went wrong"
+            error:
+                error.message ||
+                "Something went wrong"
         });
     }
 }
