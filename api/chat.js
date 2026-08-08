@@ -6,26 +6,31 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { message } = req.body;
+        const message = req.body?.message;
+
+        if (!message) {
+            return res.status(400).json({
+                error: "Message is missing"
+            });
+        }
 
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${process.env.API_KEY}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.API_KEY}`,
             {
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json"
                 },
+
                 body: JSON.stringify({
                     contents: [
                         {
                             parts: [
                                 {
-                                    text:
-                                        "Answer in simple language. " +
-                                        "Keep the answer short and beginner friendly. " +
-                                        "Do not give advanced details unless asked. " +
-                                        "User question: " +
-                                        message
+                                    text: `Answer in simple language.
+Keep the answer short and beginner friendly.
+User question: ${message}`
                                 }
                             ]
                         }
@@ -43,8 +48,10 @@ export default async function handler(req, res) {
         return res.status(200).json(data);
 
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
-            error: error.message
+            error: "Something went wrong"
         });
     }
 }
