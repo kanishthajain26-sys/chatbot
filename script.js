@@ -1,4 +1,3 @@
-
 const userInput =
     document.getElementById("userInput");
 
@@ -81,7 +80,6 @@ function renderRecentChats() {
 
         const button =
             document.createElement("button");
-
 
         button.className =
             "recent-chat";
@@ -374,7 +372,7 @@ async function sendMessage() {
 
             throw new Error(
                 data.error ||
-                "API request failed"
+                `Server error: ${response.status}`
             );
 
         }
@@ -390,7 +388,7 @@ async function sendMessage() {
         if (!answer) {
 
             throw new Error(
-                "No answer received"
+                "No answer received from server"
             );
 
         }
@@ -419,7 +417,8 @@ async function sendMessage() {
 
 
         showBotMessage(
-            "❌ Something went wrong. Please try again."
+            "❌ Error: " +
+            error.message
         );
 
 
